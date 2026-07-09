@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cinepro-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cinepro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - cinepro-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cinepro"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cinepro-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: cinepro-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - cinepro-redis-data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cinepro-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: cinepro-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - cinepro-rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cinepro-network
+
+volumes:
+  cinepro-postgres-data:
+  cinepro-redis-data:
+  cinepro-rabbitmq-data:
+
+networks:
+  cinepro-network:
+    name: cinepro-network
