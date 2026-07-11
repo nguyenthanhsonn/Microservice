@@ -1,22 +1,38 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { TimestampedEntity } from '@app/common';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CinemaStatus } from '../enums/cinema.enum';
+import { Room } from './room.entity';
+import { Showtime } from './showtime.entity';
 
 @Entity('cinemas')
-export class Cinema {
+export class Cinema extends TimestampedEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Index()
+  @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @Column()
-  address: string;
+  @Column({ type: 'text', nullable: true })
+  address: string | null;
 
-  @Column({ default: true })
-  active: boolean;
+  @Index()
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  province: string | null;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'varchar', length: 30, nullable: true })
+  hotline: string | null;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image_url: string | null;
+
+  @Column({ type: 'enum', enum: CinemaStatus, default: CinemaStatus.ACTIVE })
+  @Index()
+  status: CinemaStatus;
+
+  @OneToMany(() => Room, (room) => room.cinema)
+  rooms: Room[];
+
+  @OneToMany(() => Showtime, (showtime) => showtime.cinema)
+  showtimes: Showtime[];
 }

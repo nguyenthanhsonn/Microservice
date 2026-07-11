@@ -1,31 +1,45 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { CreatedAtEntity } from '@app/common';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
+import { SeatType } from '../enums/cinema.enum';
+import { Room } from './room.entity';
+import { ShowtimeSeat } from './showtime-seat.entity';
 
 @Entity('seats')
-export class Seat {
+@Unique(['room_id', 'seat_row', 'seat_number'])
+export class Seat extends CreatedAtEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  roomId: string;
+  @Column({ type: 'uuid' })
+  room_id: string;
 
-  @Column()
-  rowLabel: string;
+  @ManyToOne(() => Room, (room) => room.seats, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'room_id' })
+  room: Room;
+
+  @Column({ type: 'varchar', length: 5 })
+  seat_row: string;
 
   @Column({ type: 'int' })
-  seatNumber: number;
+  seat_number: number;
 
-  @Column()
-  code: string;
+  @Column({ type: 'enum', enum: SeatType, default: SeatType.STANDARD })
+  type: SeatType;
 
-  @Column({ default: 'standard' })
-  type: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: '0' })
+  price_adjustment: string;
 
-  @Column({ default: true })
-  active: boolean;
+  @Column({ type: 'boolean', default: true })
+  is_active: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToMany(() => ShowtimeSeat, (showtimeSeat) => showtimeSeat.seat)
+  showtime_seats: ShowtimeSeat[];
 }
