@@ -1,4 +1,12 @@
+export enum ProductCategory {
+  COMBO = 'COMBO',
+  FOOD = 'FOOD',
+  DRINK = 'DRINK',
+  MERCHANDISE = 'MERCHANDISE',
+}
+
 export enum ProductStatus {
-  Active = 'active',
-  Inactive = 'inactive'
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  OUT_OF_STOCK = 'OUT_OF_STOCK',
 }

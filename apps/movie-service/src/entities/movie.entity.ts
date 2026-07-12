@@ -1,26 +1,52 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { MovieStatus } from '../enums/movie-status.enum';
+import { TimestampedEntity } from '@app/common';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MovieAgeRating, MovieStatus, ScreeningFormat } from '../enums/movie-status.enum'; 
+import { MovieCast } from './movie-cast.entity';
+import { MovieGenre } from './movie-genre.entity';
 
 @Entity('movies')
-export class Movie {
+export class Movie extends TimestampedEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Index()
+  @Column({ type: 'varchar', length: 200 })
   title: string;
 
-  @Column({ nullable: true })
-  description?: string;
+  @Column({ type: 'text', nullable: true })
+  description: string | null;
 
-  @Column({ type: 'int', default: 0 })
-  durationMinutes: number;
+  @Column({ type: 'int' })
+  duration_minutes: number;
 
-  @Column({ type: 'enum', enum: MovieStatus, default: MovieStatus.Draft })
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  poster_url: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  trailer_url: string | null;
+
+  @Column({ type: 'varchar', length: 160, nullable: true })
+  director: string | null;
+
+  @Column({ type: 'date', nullable: true })
+  start_date: string | null;
+
+  @Column({ type: 'date', nullable: true })
+  end_date: string | null;
+
+  @Column({ type: 'enum', enum: MovieAgeRating, nullable: true })
+  age_rating: MovieAgeRating | null;
+
+  @Column({ type: 'enum', enum: MovieStatus, default: MovieStatus.COMING_SOON })
+  @Index()
   status: MovieStatus;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'simple-array', nullable: true })
+  supported_formats: ScreeningFormat[] | null;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToMany(() => MovieGenre, (movieGenre) => movieGenre.movie)
+  movie_genres: MovieGenre[];
+
+  @OneToMany(() => MovieCast, (movieCast) => movieCast.movie)
+  movie_casts: MovieCast[];
 }
