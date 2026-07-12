@@ -1,22 +1,47 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { User } from "./user.entity";
 
-@Entity('staff_profiles')
+@Entity("staff_profiles")
 export class StaffProfile {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn("uuid")
+  user_id: string;
 
-  @Column()
-  userId: string;
+  @OneToOne(() => User, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "user_id" })
+  user: User;
 
-  @Column()
-  employeeCode: string;
+  @Index({ unique: true })
+  @Column({ type: "varchar", length: 50 })
+  employee_code: string;
 
-  @Column({ nullable: true })
-  cinemaId?: string;
+  @Column({ type: "varchar", length: 100, nullable: true })
+  job_title: string | null;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Index()
+  @Column({ type: "uuid", nullable: true })
+  cinema_id: string | null;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column({ type: "varchar", length: 100, nullable: true })
+  shift_name: string | null;
+
+  @Column({ type: "time", nullable: true })
+  shift_start: string | null;
+
+  @Column({ type: "time", nullable: true })
+  shift_end: string | null;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updated_at: Date;
 }

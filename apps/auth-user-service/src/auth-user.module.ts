@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { appConfig, envValidationSchema } from '@app/config';
 import { DatabaseModule } from '@app/database';
 import { AuthMessageController } from './auth/auth-message.controller';
@@ -14,7 +15,8 @@ import { UserService } from './user/user.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [appConfig], validationSchema: envValidationSchema }),
-    DatabaseModule.forRoot([User, CustomerProfile, StaffProfile])
+    DatabaseModule.forRoot([User, CustomerProfile, StaffProfile]),
+    JwtModule.register({}),
   ],
   controllers: [HealthMessageController, AuthMessageController, UserMessageController],
   providers: [AuthService, UserService]
