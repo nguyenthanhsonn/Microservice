@@ -1,6 +1,6 @@
 import { AuthPatterns } from './auth.patterns';
 import { BookingPatterns } from './booking.patterns';
-import { CinemaPatterns, ShowtimePatterns } from './cinema-showtime.patterns';
+import { CINEMA_SHOWTIME_PATTERNS } from './cinema-showtime.patterns';
 import { MoviePatterns } from './movie.patterns';
 import { NotificationPatterns } from './notification.patterns';
 import { PaymentPatterns } from './payment.patterns';
@@ -13,11 +13,12 @@ export const ServicePatterns = {
   auth: AuthPatterns,
   user: UserPatterns,
   movie: MoviePatterns,
-  cinema: CinemaPatterns,
-  showtime: ShowtimePatterns,
+  cinema: { list: 'cinema.list', ...CINEMA_SHOWTIME_PATTERNS },
+  showtime: { list: 'showtime.list', ...CINEMA_SHOWTIME_PATTERNS },
+  cinemaShowtime: CINEMA_SHOWTIME_PATTERNS,
   booking: BookingPatterns,
   payment: PaymentPatterns,
   ticket: TicketPatterns,
   notification: NotificationPatterns,
-  product: ProductPatterns
+  product: ProductPatterns,
 } as const;

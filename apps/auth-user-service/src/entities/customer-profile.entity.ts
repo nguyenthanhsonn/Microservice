@@ -1,22 +1,56 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { Gender } from "../enums/gender.enum";
+import { MembershipLevel } from "../enums/membership-level.enum";
+import { User } from "./user.entity";
 
-@Entity('customer_profiles')
+@Entity("customer_profiles")
 export class CustomerProfile {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn("uuid")
+  user_id: string;
 
-  @Column()
-  userId: string;
+  @OneToOne(() => User, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "user_id" })
+  user: User;
 
-  @Column({ nullable: true })
-  phone?: string;
+  @Column({
+    type: "enum",
+    enum: MembershipLevel,
+    default: MembershipLevel.STANDARD,
+  })
+  membership_level: MembershipLevel;
 
-  @Column({ nullable: true })
-  dateOfBirth?: Date;
+  @Column({ type: "int", default: 0 })
+  points: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({
+    type: "decimal",
+    precision: 12,
+    scale: 2,
+    default: "0",
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => parseFloat(value),
+    },
+  })
+  total_spent: number;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column({ type: "date", nullable: true })
+  birth_date: string | null;
+
+  @Column({ type: "enum", enum: Gender, nullable: true })
+  gender: Gender | null;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updated_at: Date;
 }

@@ -1,4 +1,5 @@
 export * from './decorators/roles.decorator';
+export * from './entities/base.entity';
 export * from './filters/all-exceptions.filter';
 export * from './guards/jwt-auth.guard';
 export * from './guards/roles.guard';
