@@ -14,3 +14,6 @@ export * from './patterns/service-names';
 export * from './patterns/service-patterns';
 export * from './patterns/ticket.patterns';
 export * from './patterns/user.patterns';
+export * from './patterns/movie.patterns';
+export * from './patterns/product.patterns';
+
