@@ -6,4 +6,5 @@ export const PRODUCT_PATTERNS = {
   FIND_DETAIL: 'product.find_detail',
   FIND_AVAILABLE: 'product.find_available',
   FIND_CATEGORIES: 'product.find_categories',
+  VALIDATE_BOOKING_PRODUCTS: 'product.validate_booking_products',
 } as const;
