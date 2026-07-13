@@ -3,9 +3,9 @@ import { BookingPatterns } from './booking.patterns';
 import { CINEMA_SHOWTIME_PATTERNS } from './cinema-showtime.patterns';
 import { MOVIE_PATTERNS } from './movie.patterns';
 import { NotificationPatterns } from './notification.patterns';
-import { PaymentPatterns } from './payment.patterns';
+import { PAYMENT_PATTERNS } from './payment.patterns';
 import { PRODUCT_PATTERNS } from './product.patterns';
-import { TicketPatterns } from './ticket.patterns';
+import { TICKET_PATTERNS } from './ticket.patterns';
 import { UserPatterns } from './user.patterns';
 
 export const ServicePatterns = {
@@ -21,8 +21,8 @@ export const ServicePatterns = {
   showtime: { list: 'showtime.list', ...CINEMA_SHOWTIME_PATTERNS },
   cinemaShowtime: CINEMA_SHOWTIME_PATTERNS,
   booking: BookingPatterns,
-  payment: PaymentPatterns,
-  ticket: TicketPatterns,
+  payment: PAYMENT_PATTERNS,
+  ticket: TICKET_PATTERNS,
   notification: NotificationPatterns,
   product: {
     list: PRODUCT_PATTERNS.FIND_ALL,
