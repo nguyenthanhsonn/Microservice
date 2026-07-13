@@ -12,7 +12,11 @@ export const ServicePatterns = {
   health: 'health.check',
   auth: AuthPatterns,
   user: UserPatterns,
-  movie: MOVIE_PATTERNS,
+  movie: {
+    list: MOVIE_PATTERNS.FIND_ALL,
+    findById: MOVIE_PATTERNS.FIND_DETAIL,
+    ...MOVIE_PATTERNS,
+  },
   cinema: { list: 'cinema.list', ...CINEMA_SHOWTIME_PATTERNS },
   showtime: { list: 'showtime.list', ...CINEMA_SHOWTIME_PATTERNS },
   cinemaShowtime: CINEMA_SHOWTIME_PATTERNS,
@@ -20,5 +24,8 @@ export const ServicePatterns = {
   payment: PaymentPatterns,
   ticket: TicketPatterns,
   notification: NotificationPatterns,
-  product: PRODUCT_PATTERNS,
+  product: {
+    list: PRODUCT_PATTERNS.FIND_ALL,
+    ...PRODUCT_PATTERNS,
+  },
 } as const;
